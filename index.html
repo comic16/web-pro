@@ -3,72 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Swipe Website</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-    }
-    .page {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      transition: all 0.5s ease;
-    }
-    #home {
-      background: blue;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 2em;
-      z-index: 1;
-    }
-    #page2 {
-      background: white;
-      width: 100%;
-      height: 50%;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.5em;
-      border-top-left-radius: 20px;
-      border-top-right-radius: 20px;
-      box-shadow: 0 -5px 10px rgba(0,0,0,0.3);
-      z-index: 2;
-      transition: top 0.5s ease;
-    }
-    .horizontal-pages {
-      display: flex;
-      position: absolute;
-      top: 50%;
-      left: 0;
-      width: 300%;
-      height: 50%;
-      transition: left 0.5s ease;
-      z-index: 3;
-    }
-    .horizontal-page {
-      width: 100vw;
-      height: 100%;
-      background: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.5em;
-      border-left: 1px solid #ccc;
-    }
-  </style>
+  <title>Swipe Web Pro</title>
+
+  <!-- Link ke file style.css -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- SwiperJS CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
 </head>
 <body>
 
@@ -80,78 +22,24 @@
   Hallo, nama saya Hendri
 </div>
 
-<div class="horizontal-pages" id="horizontalPages">
-  <div class="horizontal-page">Saya anak pertama dari empat bersaudara</div>
-  <div class="horizontal-page">Saya tinggal di Parut Setia</div>
-  <div class="horizontal-page" id="tanggalHariIni"></div>
+<div class="swiper-container">
+  <div class="swiper-wrapper">
+    <div class="swiper-slide">Saya anak pertama dari empat bersaudara</div>
+    <div class="swiper-slide">Saya tinggal di Parut Setia</div>
+    <div class="swiper-slide" id="tanggalHariIni"></div>
+  </div>
 </div>
 
-<script>
-  let page2 = document.getElementById('page2');
-  let horizontalPages = document.getElementById('horizontalPages');
-  let currentPage = 0;
-  let page2Visible = false;
+<div class="indicator">
+  <div class="dot active"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+</div>
 
-  // Tampilkan tanggal hari ini
-  let today = new Date();
-  let options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-  document.getElementById('tanggalHariIni').innerText = today.toLocaleDateString('id-ID', options);
-
-  // Swipe detection
-  let startX = 0, startY = 0, endX = 0, endY = 0;
-
-  document.addEventListener('touchstart', function(e) {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-  }, false);
-
-  document.addEventListener('touchend', function(e) {
-    endX = e.changedTouches[0].clientX;
-    endY = e.changedTouches[0].clientY;
-
-    handleSwipe();
-  }, false);
-
-  document.addEventListener('mousedown', function(e) {
-    startX = e.clientX;
-    startY = e.clientY;
-  }, false);
-
-  document.addEventListener('mouseup', function(e) {
-    endX = e.clientX;
-    endY = e.clientY;
-
-    handleSwipe();
-  }, false);
-
-  function handleSwipe() {
-    let diffX = endX - startX;
-    let diffY = endY - startY;
-
-    if (!page2Visible) {
-      // Belum tampil halaman 2, hanya boleh swipe ke atas
-      if (diffY < -50) { // geser ke atas
-        page2.style.top = '50%';
-        page2Visible = true;
-      }
-    } else {
-      // Kalau sudah muncul page2, swipe kiri kanan untuk geser halaman
-      if (Math.abs(diffX) > Math.abs(diffY)) { // swipe horizontal
-        if (diffX < -50) { // swipe kiri
-          if (currentPage > -2) {
-            currentPage--;
-            horizontalPages.style.left = (currentPage * 100) + 'vw';
-          }
-        } else if (diffX > 50) { // swipe kanan
-          if (currentPage < 0) {
-            currentPage++;
-            horizontalPages.style.left = (currentPage * 100) + 'vw';
-          }
-        }
-      }
-    }
-  }
-</script>
+<!-- Link ke file script.js -->
+<script src="script.js"></script>
+<!-- SwiperJS JS -->
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
 </body>
 </html>
