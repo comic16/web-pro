@@ -14,6 +14,9 @@ body, html {
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
 }
 
 .page {
@@ -21,12 +24,18 @@ body, html {
   width: 100%;
   height: 100%;
   transition: transform 0.5s ease;
+  overflow: hidden;
 }
 
 .page img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.page2 {
+  top: 50%; /* Setengah halaman 2 akan menimpa halaman 1 */
+  transform: translateY(-50%);
 }
 
 .page5 {
