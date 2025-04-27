@@ -28,17 +28,17 @@ body, html {
 }
 
 .page1 {
-  background-color: blue;
+  background-color: blue; /* Halaman 1 berwarna biru */
 }
 
 .page2 {
-  background-color: orange;
+  background-color: orange; /* Halaman 2 berwarna oranye */
   height: 40%;
   top: 100%; /* Mulai dari luar layar */
 }
 
 .page3 {
-  background-color: green;
+  background-color: green; /* Halaman 3 berwarna hijau */
   height: 40%;
   top: 100%; /* Mulai dari luar layar */
 }
