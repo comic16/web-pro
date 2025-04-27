@@ -1,65 +1,78 @@
-let currentPage = 1;
-const pages = document.querySelectorAll('.page');
-let touchStartX = 0;
-let touchEndX = 0;
 let touchStartY = 0;
 let touchEndY = 0;
+let touchStartX = 0;
+let touchEndX = 0;
+let isPage2Active = false;
+let isPage3Active = false;
 
-function goToPage(pageNum) {
-  pages.forEach((page, index) => {
-    if (index + 1 === pageNum) {
-      page.style.transform = `translateX(0)`; // Tampilkan halaman yang sesuai
-    } else {
-      page.style.transform = `translateX(100%)`; // Sembunyikan halaman lainnya
-    }
-  });
-  currentPage = pageNum;
-}
+const page1 = document.getElementById("page1");
+const page2 = document.getElementById("page2");
+const page3 = document.getElementById("page3");
 
+// Fungsi untuk menangani swipe up dan swipe left/right
 function swipeEffect() {
-  document.addEventListener('touchstart', (e) => {
-    touchStartX = e.changedTouches[0].screenX;
+  document.addEventListener("touchstart", (e) => {
     touchStartY = e.changedTouches[0].screenY;
+    touchStartX = e.changedTouches[0].screenX;
   });
 
-  document.addEventListener('touchend', (e) => {
-    touchEndX = e.changedTouches[0].screenX;
+  document.addEventListener("touchend", (e) => {
     touchEndY = e.changedTouches[0].screenY;
+    touchEndX = e.changedTouches[0].screenX;
 
-    // Geser kiri/kanan
-    if (Math.abs(touchStartX - touchEndX) > 50) {
-      if (touchStartX - touchEndX > 50) {
-        // Swipe ke kiri (halaman berikutnya)
-        if (currentPage < 5) {
-          goToPage(currentPage + 1);
+    // Geser ke atas untuk membuka halaman 2
+    if (Math.abs(touchStartY - touchEndY) > 50) {
+      if (touchStartY > touchEndY) {
+        // Geser ke atas
+        if (!isPage2Active) {
+          page2.classList.add("active");
+          isPage2Active = true;
         }
-      } else if (touchEndX - touchStartX > 50) {
-        // Swipe ke kanan (halaman sebelumnya)
-        if (currentPage > 1) {
-          goToPage(currentPage - 1);
+      } else if (touchEndY > touchStartY) {
+        // Geser ke bawah (menutup halaman 2)
+        if (isPage2Active) {
+          page2.classList.remove("active");
+          isPage2Active = false;
+        }
+        if (isPage3Active) {
+          page3.classList.remove("active");
+          isPage3Active = false;
         }
       }
     }
 
-    // Geser atas/bawah untuk kembali menurunkan halaman 2
-    if (Math.abs(touchStartY - touchEndY) > 50) {
-      if (touchStartY < touchEndY) {
-        // Sentuh halaman pertama saat halaman 2 terbuka
-        if (currentPage === 2) {
-          goToPage(1); // Kembali ke halaman 1
+    // Geser ke kiri/kanan untuk berpindah ke halaman 3
+    if (Math.abs(touchStartX - touchEndX) > 50) {
+      if (touchStartX > touchEndX) {
+        // Geser ke kiri
+        if (isPage2Active && !isPage3Active) {
+          page3.classList.add("active");
+          isPage3Active = true;
+        }
+      } else if (touchEndX > touchStartX) {
+        // Geser ke kanan
+        if (isPage3Active) {
+          page3.classList.remove("active");
+          isPage3Active = false;
         }
       }
     }
   });
 }
 
-document.getElementById('galeriBtn').addEventListener('click', () => {
-  document.querySelector('.page6').style.visibility = 'visible';
-  document.querySelector('.page6').style.transform = 'translateY(0)';
+// Menutup halaman 2 atau 3 ketika halaman 1 diklik
+page1.addEventListener("click", () => {
+  if (isPage2Active) {
+    page2.classList.remove("active");
+    isPage2Active = false;
+  }
+  if (isPage3Active) {
+    page3.classList.remove("active");
+    isPage3Active = false;
+  }
 });
 
 function init() {
-  goToPage(1);
   swipeEffect();
 }
 
